@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Anasayfa</h1>
+
+
+
+<div class="container">
+        <form method="POST" novalidate>
+            {% csrf_token %}
+        
+        <div class="row">
+
+            <div class="col-6">
+                <label>{{form.full_name.label}}</label>
+                {{form.full_name}}
+            </div>
+
+            <div class="col-6">
+                <label>{{form.email.label}}</label>
+                {{form.email}}
+            </div>
+
+            <div class="col-12">
+                <label>{{form.text}}</label>
+                {{form.media}}                
+            </div>
+            <div class="col-3">
+                <input type="submit" value="Gönder" >
+            </div>
+            
+        </div>
+    </form>
+        
+</div>
+
+
+    
+    
+
+<div class="container">
+{% for y in yorum %}
+
+    <div class="row">
+        <div class="col-12">
+            <h3>{{y.full_name}}</h3>
+            <p>{{y.text|safe}}</p>
+            <p>{{y.date}}</p>
+
+            {% if y.user == request.user  %}
+            
+            <form method="POST" action="{% url 'sil' %}">
+                {% csrf_token %}
+                <input type="text" value="{{y.id}}" name="sil" hidden>
+                <button type="submit" class="btn btn-danger">Sil</button>
+            </form>
+
+            {% endif %}
+        </div>
+    </div>
+    
+    {% endfor %}
+
+</div>
+
+{% endblock content %}
